@@ -1,26 +1,46 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app">
+    <Editor v-model="state" :formData="formData" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import data from "./data.json";
+import { ref, provide } from "vue";
+import Editor from "./packages/editor/editor.jsx";
+import { registerConfig as config } from "./utils/editor-config.jsx";
+import Range from "./components/Range.jsx";
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Editor,
+    Range,
+  },
+  setup() {
+    const state = ref(data);
+    provide("config", config);
+    //提供input双向绑定使用
+    const formData = ref({
+      username: "monica",
+      password: 123456,
+      start: 0,
+      end: 100,
+      href: "https://www.baidu.com/",
+    });
+    return {
+      state,
+      formData,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.app {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
 }
 </style>
